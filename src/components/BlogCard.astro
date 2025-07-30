@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  isFeatured?: boolean;
+}
+
+const { post, isFeatured = false } = Astro.props;
+
+// Check if the heroImage is a URL (starts with / or http)
+const isImageUrl = post.data.heroImage.startsWith('/') || post.data.heroImage.startsWith('http');
+---
+<article class:list={["card", isFeatured ? "featured-card" : "blog-card"]}>
+    {/* Conditionally render the image div */}
+    {isImageUrl ? (
+      <a href={`/blog/${post.slug}/`} class="card-image-link" aria-label={`Read more about ${post.data.title}`}>
+        <div 
+          class="card-image"
+          style={`background-image: url(${post.data.heroImage})`}
+        >
+          {/* This div is now a background image container */}
+        </div>
+      </a>
+    ) : (
+      <div class="card-image">{post.data.heroImage}</div>
+    )}
+
+    <div class="card-content">
+        <p class="card-category">{post.data.category}</p>
+        <a href={`/blog/${post.slug}/`}>
+            <h3 class="card-title">{post.data.title}</h3>
+        </a>
+        <p class="card-excerpt">{post.data.description}</p>
+        {isFeatured ? (
+            <a href={`/blog/${post.slug}/`} class="read-more">Read Full Article</a>
+        ) : (
+            <div class="blog-meta">
+                <span>{post.data.readTime}</span>
+                <span>{post.data.pubDate.toLocaleDateString('en-us', { month: 'short', day: 'numeric', year: 'numeric'})}</span>
+            </div>
+        )}
+    </div>
+</article>

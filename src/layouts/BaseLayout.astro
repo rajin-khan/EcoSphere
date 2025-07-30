@@ -1,0 +1,30 @@
+---
+import "../styles/global.css";
+import Header from '../components/Header.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <div class="container">
+        © {new Date().getFullYear()} EcoSphere. All rights reserved.
+      </div>
+    </footer>
+  </body>
+</html>

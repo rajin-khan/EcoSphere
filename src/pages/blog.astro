@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogCard from '../components/BlogCard.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout title="Blog | EcoSphere" description="All articles from the EcoSphere blog.">
+  <div class="container">
+    <div class="page-header">
+      <h1>All Articles</h1>
+      <p>The complete archive of research and insights.</p>
+    </div>
+    <div class="blog-grid">
+      {posts.map(post => <BlogCard post={post} />)}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: 4rem 0 0;
+    text-align: center;
+  }
+   .page-header h1 {
+    font-size: 3rem;
+   }
+   .page-header p {
+    margin: 1rem auto 0;
+   }
+</style>
